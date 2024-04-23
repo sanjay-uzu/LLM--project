@@ -9,11 +9,6 @@ from bytewax.inputs import DynamicInput, StatelessSource
 logger = logging.getLogger(__name__)
 
 class AlpacaNewsStreamInput(DynamicInput):
-    """Input class to receive streaming news data from Alpaca's real-time API.
-
-    Attributes:
-        tickers (List[str]): List of stock tickers to subscribe to, use "*" for all.
-    """
     def __init__(self, tickers: List[str]):
         self.tickers = tickers
 
@@ -24,11 +19,6 @@ class AlpacaNewsStreamInput(DynamicInput):
         return AlpacaNewsStreamSource(allocated_tickers)
 
 class AlpacaNewsStreamSource(StatelessSource):
-    """A source for streaming news data from Alpaca API.
-
-    Attributes:
-        tickers (List[str]): Ticker symbols to subscribe to.
-    """
     def __init__(self, tickers: List[str]):
         self.client = build_alpaca_client(tickers=tickers)
         self.client.start()
@@ -49,14 +39,6 @@ def build_alpaca_client(tickers: List[str]):
     return AlpacaNewsStreamClient(api_key, api_secret, tickers)
 
 class AlpacaNewsStreamClient:
-    """Client that uses a websocket to stream news data from Alpaca.
-
-    Attributes:
-        api_key (str): Alpaca API key.
-        api_secret (str): Alpaca API secret.
-        tickers (List[str]): Tickers to subscribe to.
-        ws (websocket.WebSocket): Websocket connection.
-    """
     NEWS_URL = "wss://stream.data.alpaca.markets/v1beta1/news"
 
     def __init__(self, api_key: str, api_secret: str, tickers: List[str]):
